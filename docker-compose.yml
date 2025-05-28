@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  pegasus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pegasus-app
+    container_name: pegasus-container
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    restart: unless-stopped 
